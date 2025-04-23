@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Atuin-lite: Fuzzy search shell history from ~/.zsh_history
+
+HISTORY_FILE="$HOME/.zsh_history"
+
+# Remove timestamps and extract actual commands
+strings "$HISTORY_FILE" | sed 's/^: [0-9]*:[0-9]*;//' | sort -u |
+fzf --height=40% --reverse --prompt="History ❯ " \
+    --bind "enter:execute-silent(echo {} | pbcopy)+abort" \
+    --preview "echo {}" \
+    --header "🔍 Select a command (press Enter to copy to clipboard)"
